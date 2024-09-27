@@ -1,8 +1,6 @@
 //battleShip -- This file simulates a game of battleship using X and Y coordinate inputs from the user 
 //and checking them against a 25 x 25 grid of ships to determine hits.
 //In the end the grid from the game will be printed for the user to see
-//CSIS 111-B02 
-//<Sources if necessary>
 
 //Include statements
 #include <iostream>
@@ -41,10 +39,7 @@ void fleetSunk(char shipM[][NUM_COLUMNS], bool& allsunk);
 
 int main()
 {
-	//In cout statement below SUBSTITUTE your name and lab number
-	cout << "Hayden Eubanks -- Lab 8" << endl << endl;
-
-	//Variable declarations
+	cout << "Hayden Eubanks" << endl << endl;
 
 	//Array to store the ship map and hits
 	char shipMap[NUM_ROWS][NUM_COLUMNS];
@@ -64,11 +59,12 @@ int main()
 	bool shipTracker6[NUM_ROWS][NUM_COLUMNS];
 	bool shipTracker7[NUM_ROWS][NUM_COLUMNS];
 
-	//Bool to check if all of the ships have been sunk
+	//Bool to check if all the ships have been sunk
 	bool allSunkCheck = false;
 	//Variables for x and y coordinates
 	int xCord = 0;
 	int yCord = 0;
+    int mapSeed = 1 + rand() % 10;
 
 	string fileName;
 	ifstream inFile;
@@ -83,11 +79,11 @@ int main()
 	cout << "To see a current map of your guesses enter 0 0 for your x and y coordinates." << endl << endl;
 
 	//Asks which file the user would like to use
-	cout << "Enter file Name of battle map file to begin (example: file.txt)." << endl;
-	cout << "Files uploaded should be txt files with no more than 7 ships of a max length of 5." << endl << endl;
-	cout << "File Name: ";
-	cin >> fileName;
-	cout << endl << endl;
+//	cout << "Enter file Name of battle map file to begin (example: file.txt)." << endl;
+//	cout << "Files uploaded should be txt files with no more than 7 ships of a max length of 5." << endl << endl;
+//	cout << "File Name: ";
+//	cin >> fileName;
+//	cout << endl << endl;
 
 	//initialize all positions to unchecked and unassigned to ships
 	for (int k = 0; k < 25; k++)
@@ -107,7 +103,17 @@ int main()
 	}
 	
 	//Open file and loop through each row and column to import grid
-	inFile.open(fileName);
+    try {
+        inFile.open("BattleshipMaps/BattleMap" + to_string(mapSeed) +".txt");
+        if(inFile.is_open()) {
+            cout << "Ship Map Loaded Successfully\n";
+        }
+
+    } catch(const ifstream::failure& e) {
+        cout << "Exception opening/reading file";
+    }
+
+
 	for (int g = 0; g < 25; g++)
 	{
 		for (int h = 0; h < 25; h++)
@@ -129,7 +135,7 @@ int main()
 		cout << "X and Y Coordinates: ";
 		cin >> xCord >> yCord;
 
-		//Alligns user input with the zero indexed array so guess "1 1" is the first position and "25 25" is the last
+		//Aligns user input with the zero indexed array so guess "1 1" is the first position and "25 25" is the last
 		xCord = xCord - 1;
 		yCord = yCord - 1;
 		cout << endl << endl;
@@ -138,7 +144,7 @@ int main()
 		fire(xCord, yCord, shipMap, shipMapBlank, shipTracker1, shipTracker2, shipTracker3, shipTracker4, shipTracker5,
 			shipTracker6, shipTracker7);
 
-		//Funciton to see if all of the ships are sunk and if so prints the final game board
+		//Function to see if all the ships are sunk and if so prints the final game board
 		fleetSunk(shipMap, allSunkCheck);
 	}
 
@@ -154,7 +160,7 @@ void updateShipDetails(char shMap[][NUM_COLUMNS], bool posChecked[][NUM_COLUMNS]
 bool shipTrack3[][NUM_COLUMNS], bool shipTrack4[][NUM_COLUMNS], bool shipTrack5[][NUM_COLUMNS], bool shipTrack6[][NUM_COLUMNS],
 bool shipTrack7[][NUM_COLUMNS])
 {
-	//Loops through the grid and for each position assigns corisponding ship, ship length, and position
+	//Loops through the grid and for each position assigns corresponding ship, ship length, and position
 	for (int i = 0; i < 25; i++)
 	{
 		for (int j = 0; j < 25; j++)
@@ -577,7 +583,7 @@ void fire(int xCoordinate, int yCoordinate, char sMap[][NUM_COLUMNS], char sMapB
 	cout << endl << endl;
 }
 
-//Function to check if all of the ships have been sunk and then print final game board
+//Function to check if all the ships have been sunk and then print final game board
 void fleetSunk(char shipM[][NUM_COLUMNS], bool& allsunk)
 {
 	//Checks to see if all of teh ships have been sunk
